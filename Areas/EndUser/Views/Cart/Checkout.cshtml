@@ -1,0 +1,135 @@
+﻿@model Hoc_ASP.NET_MVC.Models.Entity.Transaction
+
+@using Hoc_ASP.NET_MVC.Models.Code;
+@using Hoc_ASP.NET_MVC.Models.DAT;
+
+@{
+    Layout = null;
+    ShoppingCart cart = SessionShoppingCart.Get();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Checkout | E-Shopper</title>
+
+
+    <link href="~/Assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Assets/css/prettyPhoto.css" rel="stylesheet">
+    <link href="~/Assets/css/price-range.css" rel="stylesheet">
+    <link href="~/Assets/css/animate.css" rel="stylesheet">
+    <link href="~/Assets/css/main.css" rel="stylesheet">
+    <link href="~/Assets/css/responsive.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <link rel="shortcut icon" href="~/Assets/images/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/Assets/images/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/Assets/images/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/Assets/images/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="~/Assets/images/ico/apple-touch-icon-57-precomposed.png">
+
+
+    <!--new-->
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <link href="~/Assets/Code/myStyle.css" rel="stylesheet" />
+</head><!--/head-->
+
+<body>
+    <section id="cart_items">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ol class="breadcrumb">
+                    <li><a class="home" href="@Url.Action("Index","Products",new {area = "EndUser" })">Home</a></li>
+                    <li class="active">Check out</li>
+                </ol>
+            </div><!--/breadcrums-->
+            <div class="row">
+                <div class="col-sm-5">
+                    <p>Bạn đã có tài khoản? <a href="">Đăng nhập</a></p>
+                    <div class="clearfix">
+                        <div class="bill-to">
+                            <div class="form-one" style="width: 100%;">
+                                <form>
+                                    <input type="text" placeholder="Họ tên" id="name">
+                                    <input type="text" placeholder="Email*" id="email">
+                                    <input type="text" placeholder="Số điện thoại*" id="phone">
+                                    <input type="text" placeholder="Địa chỉ" id="orderAddress">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="order-message ">
+                            <textarea id="note" placeholder="Ghi chú" style="height: 100px;"></textarea>
+                            <div>
+                                <input type="radio" name="payment-option" checked="true" value="1">Phương thức thanh toán COD(thanh toán khi nhận hàng)
+                            </div>
+                            <br>
+                            <a href="@Url.Action("Show","Cart",new { area = "EndUser"})">Giỏ hàng</a>
+                            <button id="btnCheckout" class="btn btn-info pull-right">Đặt hàng</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-7">
+                    <div class="table-responsive cart_info">
+                        <table class="table table-condensed ">
+                            <thead>
+                                <tr class="cart_menu">
+                                    <td class="image">Sản phẩm</td>
+                                    <td class="description"></td>
+                                    <td class="total" align="right">Thành tiền</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in cart.ListItem)
+                                {
+                                    <tr>
+                                        <td class="cart_product">
+                                            <a href=""><img src="@Url.Content("~/Images/"+item.product.ProductType.name+"/" +item.product.img0)" alt="Ảnh chính" class="image-products"></a>
+                                        </td>
+                                        <td class="cart_description">
+                                            <h4><a href="">@item.product.name <span class="badge badge-dark" style="font-size: 20px;">@item.quantity</span></a></h4>
+                                        </td>
+                                        <td class="cart_total" align="right">
+                                            <p class="cart_total_price">@item.totalPrice.ToVND()</p>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <table width="100%">
+                        <col style="width: 50%;">
+                        <col style="width: 20%;">
+                        <col style="width: 30%;">
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td>Phí ship</td>
+                                <td align="right">Miễn phí</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Tổng tiền</td>
+                                <td class="cart_total" align="right"><p style=" color: #FE980F; font-size: 30px;">@cart.TotalCash.ToVND()</p></td>
+                            </tr>
+                    </table>
+                </div>
+            </div>
+    </section> <!--/#cart_items-->
+
+    <script src="~/Assets/js/jquery.js"></script>
+    <script src="~/Assets/js/bootstrap.min.js"></script>
+    <script src="~/Assets/js/jquery.scrollUp.min.js"></script>
+    <script src="~/Assets/js/jquery.prettyPhoto.js"></script>
+    <script src="~/Assets/js/main.js"></script>
+    <script src="~/Areas/EndUser/UserScript/Cart.js"></script>
+    <script src="~/Areas/EndUser/UserScript/Checkout.js"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+﻿@using Hoc_ASP.NET_MVC.Models.Code
+@using Hoc_ASP.NET_MVC.Models.DAT;
+@using Hoc_ASP.NET_MVC.Models.Code;
+@{
+    ShoppingCart cart = SessionShoppingCart.Get();
+}
+<div class="table-responsive cart_info">
+
+    <table class="table table-condensed">
+        <thead>
+            <tr class="cart_menu">
+                <td class="image">Item</td>
+                <td class="description"></td>
+                <td class="price">Price</td>
+                <td class="quantity">Quantity</td>
+                <td class="total">Total</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in cart.ListItem)
+            {
+                <tr>
+                    <td class="cart_product">
+                        <a href="">
+                            <img src="@Url.Content(string.Format("~/Images/{0}/{1}",item.product.ProductType.name,item.product.img0))" alt="imgage" class="image-products">
+                        </a>
+                    </td>
+                    <td class="cart_description">
+                        <h4><a href="">@item.product.name</a></h4>
+                        <p>Web ID: 1089772</p>
+                    </td>
+                    <td id="" class="cart_price">
+                        <p>@item.product.price.ToVND()</p>
+                    </td>
+                    <td class="cart_quantity">
+                        <div class="cart_quantity_button">
+                            <a class="cart_quantity_up" data-id="@item.idProduct" data-price="@item.product.price"> + </a>
+                            <input id="cart_quantity_@item.idProduct" data-id="@item.idProduct" class="cart_quantity_input" type="text" name="quantity" value=@item.quantity autocomplete="off" size="2">
+                            <a class="cart_quantity_down" data-id="@item.idProduct"> - </a>
+                        </div>
+                    </td>
+                    <td class="cart_total">
+                        <p id="cart_total_@item.idProduct" class="cart_total_price">@item.totalPrice.ToVND()</p>
+                    </td>
+                    <td class="cart_delete ">
+                        <a class="cart_quantity_delete remove-cart" href="@Url.Action("Remove","Cart",new {id=item.idProduct })">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-5"></div>
+        <div class="col-md-3 ">
+            <span>
+                <label class="" style="padding-left:20px">Tổng tiền:</label>
+                <label class="title" style="color: #FE980F; font-size: 24px;">@cart.TotalCash.ToVND()</label>
+            </span>
+            <div>
+                <button id="btnUpdate" class="btn btn-default update ">Update</button>
+                <a class="btn btn-primary check_out " href="@Url.Action("Checkout","Cart",new {area="EndUser" })">Checkout</a>
+            </div>
+            <br />
+        </div>
+
+    </div>
+
+</div>

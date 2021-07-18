@@ -16,10 +16,9 @@ namespace Hoc_ASP.NET_MVC
             var route = routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Products", action = "Index", id = UrlParameter.Optional},
-                new[] { "Hoc_ASP.NET_MVC.Areas.Admin.Controllers"}
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                namespaces: new[] { "Hoc_ASP.NET_MVC.Controllers" }
             );
-            route.DataTokens["area"] = "Admin";
         }
     }
 }

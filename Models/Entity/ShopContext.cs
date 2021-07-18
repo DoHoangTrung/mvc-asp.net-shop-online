@@ -14,20 +14,24 @@ namespace Hoc_ASP.NET_MVC.Models.Entity
 
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<AccountType> AccountTypes { get; set; }
-        public virtual DbSet<Customer> Customers { get; set; }
-        public virtual DbSet<OrderStatu> OrderStatus { get; set; }
-        public virtual DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductType> ProductTypes { get; set; }
+        public virtual DbSet<Transaction> Transactions { get; set; }
+        public virtual DbSet<TransactionStatu> TransactionStatus { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>()
-                .Property(e => e.nameLogin)
+                .Property(e => e.userName)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Account>()
                 .Property(e => e.passWord)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Account>()
+                .Property(e => e.phone)
                 .IsUnicode(false);
 
             modelBuilder.Entity<AccountType>()
@@ -39,39 +43,8 @@ namespace Hoc_ASP.NET_MVC.Models.Entity
                 .WithOptional(e => e.AccountType)
                 .HasForeignKey(e => e.typeId);
 
-            modelBuilder.Entity<Customer>()
-                .Property(e => e.name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Customer>()
-                .Property(e => e.address)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Customer>()
-                .Property(e => e.phone)
-                .IsFixedLength()
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Customer>()
-                .Property(e => e.email)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Customer>()
-                .HasMany(e => e.Payments)
-                .WithOptional(e => e.Customer)
-                .HasForeignKey(e => e.idCustomer);
-
-            modelBuilder.Entity<OrderStatu>()
-                .HasMany(e => e.Payments)
-                .WithOptional(e => e.OrderStatu)
-                .HasForeignKey(e => e.idOrderStatus);
-
             modelBuilder.Entity<Product>()
                 .Property(e => e.name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Product>()
-                .Property(e => e.supplier)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Product>()
@@ -86,9 +59,34 @@ namespace Hoc_ASP.NET_MVC.Models.Entity
                 .Property(e => e.img2)
                 .IsUnicode(false);
 
+            modelBuilder.Entity<Product>()
+                .HasMany(e => e.Orders)
+                .WithRequired(e => e.Product)
+                .HasForeignKey(e => e.idProduct)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<ProductType>()
                 .Property(e => e.name)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<Transaction>()
+                .Property(e => e.phone)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Transaction>()
+                .Property(e => e.email)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Transaction>()
+                .HasMany(e => e.Orders)
+                .WithRequired(e => e.Transaction)
+                .HasForeignKey(e => e.idTransaction)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TransactionStatu>()
+                .HasMany(e => e.Transactions)
+                .WithOptional(e => e.TransactionStatu)
+                .HasForeignKey(e => e.statusId);
         }
     }
 }

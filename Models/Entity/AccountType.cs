@@ -15,6 +15,7 @@ namespace Hoc_ASP.NET_MVC.Models.Entity
             Accounts = new HashSet<Account>();
         }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int id { get; set; }
 
         [StringLength(200)]

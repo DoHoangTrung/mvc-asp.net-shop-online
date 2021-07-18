@@ -17,7 +17,7 @@ namespace Hoc_ASP.NET_MVC.Areas.Admin
             context.MapRoute(
                 "Admin_default",
                 "Admin/{controller}/{action}/{id}",
-                new { action = "Index",controller = "Products" ,id = UrlParameter.Optional }
+                new { action = "Index", controller = "Products", id = UrlParameter.Optional } //, new[] { "Hoc_ASP.NET_MVC.Areas.Admin.Controllers" }
             );
         }
     }

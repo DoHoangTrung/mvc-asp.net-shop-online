@@ -17,10 +17,10 @@ namespace Hoc_ASP.NET_MVC.Models.DAO
         {
             db = new ShopContext();
         }
-        public List<Product> GetProducts()
+        public List<Product> GetList()
         {
             var products = db.Products.ToList();
-            return products;
+            return products.OrderByDescending(p=>p.price).ToList();
         }
 
         public List<Product> GetProductsByType(int idType)
@@ -51,7 +51,7 @@ namespace Hoc_ASP.NET_MVC.Models.DAO
             else return -1;
         }
 
-        public Product GetProductByID(int id)
+        public Product GetByID(int? id)
         {
             return db.Products.Find(id);
         }
@@ -132,7 +132,7 @@ namespace Hoc_ASP.NET_MVC.Models.DAO
                     return true;
                 else
                     return false;
-            }).Select(p => p).ToList();
+            }).OrderByDescending(p=>p.price).Select(p => p).ToList();
 
             return products;
         }

@@ -17,8 +17,8 @@ namespace Hoc_ASP.NET_MVC.Areas.Admin.Controllers
 
         public ActionResult Index(int page = 1, int pageSize = 5)
         {
-            var sessionLogin = SessionHelper.GetSessionLogin();
-            if(sessionLogin == null)//ERROR: !=
+            var sessionLogin = SessionLogin.Get();
+            if (sessionLogin != null)
             {
                 //load product type dropdownlist
                 ProductTypeDAO typeDao = new ProductTypeDAO();
@@ -30,7 +30,7 @@ namespace Hoc_ASP.NET_MVC.Areas.Admin.Controllers
                 if (products == null)
                 {
                     ProductDAO proDao = new ProductDAO();
-                    products = proDao.GetProducts();
+                    products = proDao.GetList();
                 }
 
                 return View(products.ToPagedList(page, pageSize));
@@ -100,22 +100,47 @@ namespace Hoc_ASP.NET_MVC.Areas.Admin.Controllers
             ProductDAO pDao = new ProductDAO();
             var searchResult = pDao.Search(searchModel);
 
-            return View( "~/Areas/Admin/Views/Products/Index.cshtml",searchResult.ToPagedList(page, pageSize));
+            return View("~/Areas/Admin/Views/Products/Index.cshtml", searchResult.ToPagedList(page, pageSize));
         }
 
         // GET: Admin/Products/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var sessionLogin = SessionLogin.Get();
+            if (sessionLogin != null)
+            {
+                ProductDAO dao = new ProductDAO();
+                Product product = dao.GetByID(id);
+                if (product != null)
+                {
+                    return View(product);
+                }
+                else
+                {
+                    return View("../PageNotFound");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User",new { area = "" });
+            }
         }
 
         // GET: Admin/Products/Create
         public ActionResult Create()
         {
-            ProductTypeDAO typeDAO = new ProductTypeDAO();
-            var types = typeDAO.GetSelectLists();
-            Session["types"] = types;
-            return View();
+            var sessionLogin = SessionLogin.Get();
+            if (sessionLogin != null)
+            {
+                ProductTypeDAO typeDAO = new ProductTypeDAO();
+                var types = typeDAO.GetSelectLists();
+                Session["types"] = types;
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "User");
+            }
         }
 
         // POST: Admin/Products/Create
@@ -127,7 +152,7 @@ namespace Hoc_ASP.NET_MVC.Areas.Admin.Controllers
                 ProductDAO dao = new ProductDAO();
                 int id = dao.Insert(pro);
 
-                return RedirectToAction("Index","Products");
+                return RedirectToAction("Index", "Products");
             }
             catch
             {
@@ -138,16 +163,31 @@ namespace Hoc_ASP.NET_MVC.Areas.Admin.Controllers
         // GET: Admin/Products/Edit/5
         public ActionResult Edit(int id)
         {
-            ProductTypeDAO typeDAO = new ProductTypeDAO();
-            ProductDAO proDAO = new ProductDAO();
+            var sessionLogin = SessionLogin.Get();
+            if (sessionLogin != null)
+            {
+                ProductTypeDAO typeDAO = new ProductTypeDAO();
+                ProductDAO proDAO = new ProductDAO();
 
-            Product product = proDAO.GetProductByID(id);
-            Session["product"] = product;
+                Product product = proDAO.GetByID(id);
+                if (product != null)
+                {
+                    Session["product"] = product;
 
-            var types = typeDAO.GetSelectLists(product.productTypeId.GetValueOrDefault());
-            Session["types"] = types;
+                    var types = typeDAO.GetSelectLists(product.productTypeId.GetValueOrDefault());
+                    Session["types"] = types;
+                    return View();
+                }
+                else
+                {
+                    return View("../PageNotFound");
+                }
 
-            return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", new { area = "" });
+            }
         }
 
         // POST: Admin/Products/Edit/5
@@ -158,7 +198,7 @@ namespace Hoc_ASP.NET_MVC.Areas.Admin.Controllers
             {
                 ProductDAO dao = new ProductDAO();
                 dao.Update(product);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Products");
             }
             catch
             {
@@ -169,9 +209,17 @@ namespace Hoc_ASP.NET_MVC.Areas.Admin.Controllers
         // GET: Admin/Products/Delete/5
         public ActionResult Delete(int id)
         {
-            ProductDAO dao = new ProductDAO();
-            Product p = dao.GetProductByID(id);
-            return View(p);
+            var sessionLogin = SessionLogin.Get();
+            if (sessionLogin != null)
+            {
+                ProductDAO dao = new ProductDAO();
+                Product p = dao.GetByID(id);
+                return View(p);
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", new { area = "" });
+            }
         }
 
         // POST: Admin/Products/Delete/5

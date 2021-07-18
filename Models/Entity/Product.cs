@@ -9,6 +9,12 @@ namespace Hoc_ASP.NET_MVC.Models.Entity
     [Table("Product")]
     public partial class Product
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Product()
+        {
+            Orders = new HashSet<Order>();
+        }
+
         public int id { get; set; }
 
         [StringLength(100)]
@@ -16,7 +22,7 @@ namespace Hoc_ASP.NET_MVC.Models.Entity
 
         public int? quantity { get; set; }
 
-        public int? price { get; set; }
+        public double? price { get; set; }
 
         [StringLength(200)]
         public string supplier { get; set; }
@@ -34,6 +40,11 @@ namespace Hoc_ASP.NET_MVC.Models.Entity
 
         [StringLength(1000)]
         public string textInfo { get; set; }
+
+        public double? discount { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Order> Orders { get; set; }
 
         public virtual ProductType ProductType { get; set; }
     }

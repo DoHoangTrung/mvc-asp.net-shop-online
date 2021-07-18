@@ -10,6 +10,24 @@ namespace Hoc_ASP.NET_MVC.Models.Code
 {
     public static class Extension
     {
+        public static string ToVND(this double price)
+        {
+            return price.ToString("C0", CultureInfo.GetCultureInfo("vi-VN"));
+        }
+
+        public static string ToVND(this double? price)
+        {
+            return price.GetValueOrDefault().ToString("C0", CultureInfo.GetCultureInfo("vi-VN"));
+        }
+        public static string ToVND(this decimal? price)
+        {
+            return price.GetValueOrDefault().ToString("C0", CultureInfo.GetCultureInfo("vi-VN"));
+        }
+        public static string ToVND(this decimal price)
+        {
+            return price.ToString("C0", CultureInfo.GetCultureInfo("vi-VN"));
+        }
+
         public static string Format(this string text)
         {
             //removeSpace

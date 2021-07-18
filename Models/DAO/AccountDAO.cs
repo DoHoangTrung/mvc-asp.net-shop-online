@@ -15,18 +15,48 @@ namespace Hoc_ASP.NET_MVC.Models.DAO
         {
             db = new ShopContext();
         }
-        public bool Login(Account user)
+        public string Login(Account user)
         {
-            int count = db.Database.SqlQuery<int>("EXEC Login @userName,@passWord", new SqlParameter[]
+            try
             {
-                new SqlParameter("userName",user.nameLogin),
-                new SqlParameter("passWord",user.passWord),
-            }).FirstOrDefault();
+                string type = db.Database.SqlQuery<string>("EXEC dbo.Login @userName,@passWord", new SqlParameter[]
+                {
+                    new SqlParameter("userName",user.userName),
+                    new SqlParameter("passWord",user.passWord),
+                }).FirstOrDefault();
 
-            if (count > 0) 
-                return true;
-            else 
-                return false;
+                return type;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+
+        }
+
+        public int Insert(Account newUser)
+        {
+            int rowAffected = 0;
+
+            if(newUser != null)
+            {
+                try
+                {
+                    if(newUser.typeId == null)
+                    {
+                        newUser.typeId = 2;
+                    }
+                    db.Accounts.Add(newUser);
+                    rowAffected = db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    rowAffected = -1;
+                }
+                
+            }
+
+            return rowAffected;
         }
     }
 }

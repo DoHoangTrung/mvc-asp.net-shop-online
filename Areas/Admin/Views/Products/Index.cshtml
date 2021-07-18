@@ -6,14 +6,13 @@
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-
 <h2></h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <form action="@Url.Action("Show","Products")" method="post">
-    @Html.DropDownList("ddlType", ViewBag.productTypes as SelectList, "Chọn loại sản phẩm")
+    <span style="">
+        @Html.DropDownList("ddlType", ViewBag.productTypes as SelectList, "Chọn loại sản phẩm", new { @class = "col-sm-3" })
+    </span>
+
     @Html.DropDownList("ddlPrice", new List<SelectListItem>
     {
         new SelectListItem{Text = "Dưới 500 nghìn",Value ="1"},
@@ -21,12 +20,18 @@
         new SelectListItem{Text = "1tr - 1.5 triệu",Value ="3"},
         new SelectListItem{Text = "1,5 - 2 triệu",Value ="4"},
         new SelectListItem{Text = "Trên 2 triệu",Value ="5"},
-    }, "Tìm kiếm theo giá")
-    <input id="textSearch" type="text" name="textSearch" placeholder="Search for..."/>
-    <button class="btn btn-primary">
-        <i class="fas fa-search fa-sm"></i>
+    }, "Tìm kiếm theo giá", new { @class = "col-sm-3" })
+
+    <input class="" id="textSearch" type="text" name="textSearch" placeholder="Search for..."  />
+    <button class="">
+        <i class=" ">Search</i>
     </button>
 </form>
+<br />
+<br />
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
 <table class="table">
     <tr>
         <th>
@@ -55,7 +60,6 @@
         </th>
         <th></th>
     </tr>
-
     @foreach (var item in Model)
     {
         <tr>
@@ -75,13 +79,13 @@
                 @Html.DisplayFor(modelItem => item.supplier)
             </td>
             <td>
-                <img src="@Url.Content("~/ShopIMG/"+item.ProductType.name+"/" +item.img0)" alt="Image" class="image-products" />
+                <img src="@Url.Content("~/Images/"+item.ProductType.name+"/" +item.img0)" alt="Image" class="image-products" />
             </td>
             <td>
-                <img src="@Url.Content("~/ShopIMG/"+item.ProductType.name+"/" +item.img1)" alt="Image" class="image-products" />
+                <img src="@Url.Content("~/Images/"+item.ProductType.name+"/" +item.img1)" alt="Image" class="image-products" />
             </td>
             <td>
-                <img src="@Url.Content("~/ShopIMG/"+item.ProductType.name+"/" +item.img2)" alt="Image" class="image-products" />
+                <img src="@Url.Content("~/Images/"+item.ProductType.name+"/" +item.img2)" alt="Image" class="image-products" />
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
@@ -90,9 +94,8 @@
             </td>
         </tr>
     }
-
 </table>
-<div class="container" style="display:flex;justify-content:space-around">
+<div class="" style="display:flex;justify-content:space-around">
     @Html.PagedListPager(
         Model,
         page => Url.Action("Index", "Products", new { page }),

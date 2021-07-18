@@ -1,18 +1,110 @@
-﻿
-@{
-    Layout = null;
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+﻿@model Hoc_ASP.NET_MVC.Models.Entity.Product
 
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
+<h2>Details</h2>
 
-    <div>
-        <button id="trung" type="button">tttt</button>
-    </div>
-    <script>
-        $(document).ready(function () {
-            $("#trung").click(function () {
-                alert('hello')
-            })
-        })
-    </script>
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="dl-horizontal text-left">
+        <dt>
+            <div class="text-left">
+                @Html.DisplayName("Loại sản phẩm")
+            </div>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductType.name)
+        </dd>
+
+        <dt>
+            <div class="text-left">
+                @Html.DisplayName("Tên sản phẩm")
+            </div>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            <div class="text-left">
+                @Html.DisplayName("Số lượng")
+            </div>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quantity)
+        </dd>
+
+        <dt>
+            <div class="text-left">
+                @Html.DisplayName("Giá")
+            </div>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.price)
+        </dd>
+
+        <dt>
+            <div class="text-left">
+                @Html.DisplayName("Nhà cung cấp")
+            </div>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.supplier)
+        </dd>
+
+        <dt>
+            <div class="text-left">
+                @Html.DisplayName("Ảnh chính")
+            </div>
+        </dt>
+
+        <dd>
+            @*@Html.DisplayFor(model => model.img0)*@
+            <img src="@Url.Content(string.Format("~/Images/{0}/{1}",Model.ProductType.name,Model.img0))" alt="Alternate Text" class="image-products" />
+        </dd>
+
+        <dt>
+            <div class="text-left">
+                @Html.DisplayName("Ảnh phụ 1")
+            </div>
+        </dt>
+
+        <dd>
+            <img src="@Url.Content(string.Format("~/Images/{0}/{1}",Model.ProductType.name,Model.img1))" alt="Alternate Text" class="image-products" />
+        </dd>
+
+        <dt>
+            <div class="text-left">
+                @Html.DisplayName("Ảnh phụ 2")
+            </div>
+        </dt>
+
+        <dd>
+            <img src="@Url.Content(string.Format("~/Images/{0}/{1}",Model.ProductType.name,Model.img2))" alt="Alternate Text" class="image-products" />
+        </dd>
+
+        <dt>
+            <div class="text-left">
+                @Html.DisplayName("Thông tin")
+            </div>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.textInfo)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new {area = "Admin", id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
